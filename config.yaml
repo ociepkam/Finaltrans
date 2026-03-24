@@ -1,0 +1,70 @@
+# --- Timing ---
+stimuli_set_1: 2 # in seconds
+stimuli_set_2: 6 # in seconds
+stimuli_set_3: 4 # in seconds; if -1 than wait until participant answer
+
+
+# --- Stimulus visual---
+stimulus_color: black
+
+## figures
+dot_size: 3
+figure_size: 15
+stimulus_figure_width: 2
+
+## arrows
+arrow_size: 3
+stimulus_arrow_width: 2
+
+## mask
+mask_dot_size: 15
+
+## underline
+underline_color: red
+underline_width: 1
+underline_extra_y_distance: -4
+underline_extra_x_size: 4
+
+# --- Figures Sets Visual ---
+stimulus_center: (0, 0)
+stimulus_distance_from_center: 100
+
+
+
+# --- Monitor Settings ---
+monitor_name: "defaultMonitor"     # Name of the monitor profile in PsychoPy
+monitor_width: 53.0                # Physical width of the screen in cm
+monitor_distance: 60.0             # Distance from the participant to the screen in cm
+
+# --- Window Settings ---
+screen_color: "black"              # Background color of the experiment window
+
+# --- Fixation Cross ---
+fixation_color: "white"            # Color of the fixation stimulus
+fixation_text: "+"                 # Character used for fixation
+fixation_size: 40                  # Height in pixels (since units='pix' in main.py)
+
+# --- Feedback Settings ---
+feedback_text:
+  true: "Dobrze"                   # Message for accurate response
+  false: "Błędnie"                 # Message for inaccurate response
+  no_answer: "Brak odpowiedzi"     # Message for no response
+feedback_color: "white"            # Color of the feedback text
+feedback_size: 24                  # Height of the feedback text in pixels
+feedback_time: 1                   # Duration of feedback display in seconds
+
+# --- Instruction Settings ---
+instruction_color: "white"         # Default color for instruction text
+instruction_text_size: 24          # Default height for instruction text
+instruction_wrap_width: 800        # Maximum line width before wrapping in pixels
+instruction_font: 'Segoe UI Emoji' # Font name of the displayed text
+
+# --- Trigger Settings ---
+trigger:
+  dummy_mode: true        # false = wysyłaj sygnały do EEG
+  trigger_time: 0.004     # trigger time in s
+  trigger_limit: 60       # maks trigger value (triggers will be sent in a loop from 1 to trigger_limit)
+  trigger_params:         # extra columns in trigger_map
+    - block_type
+    - acc
+    - trial_type
