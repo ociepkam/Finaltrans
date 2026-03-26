@@ -77,8 +77,9 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
 
     return {
         "matrix_1": matrix_1,
-        "mask": mask,
-        "matrix_2": matrix_2,
+        "matrix_2": mask,
+        "matrix_3": mask,
+        "matrix_4": matrix_2,
         "answer": answer
     }
 
@@ -86,18 +87,10 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
 # For tests
 if __name__ == "__main__":
     from psychopy import visual, core, event
+    from src.load_data import load_config
+    from os.path import join
 
-    config = {
-        "stimulus_center": (0, 0),
-        "stimulus_distance_from_center": 30,
-        "mask_dot_size": 20,
-        "stimulus_color": "black",
-        "arrow_size": 2,
-        "stimulus_arrow_width": 2,
-        "figure_size": 10,
-        "stimulus_figure_width": 2,
-        "dot_size": 3,
-    }
+    config = load_config(join("..", "config.yaml"))
 
     win = visual.Window(color="white", units="pix", fullscr=True)
 
@@ -124,14 +117,14 @@ if __name__ == "__main__":
             draw_phase(
                 trial["matrix_1"],
                 f"{stimulus_type.upper()}  n={n}  |  ENCODING",
-                duration=2.0
+                duration=3.0
             )
 
             # Phase 2: Mask
             draw_phase(
-                trial["mask"],
+                trial["matrix_2"],
                 f"{stimulus_type.upper()}  n={n}  |  MASK",
-                duration=1.0
+                duration=3.0
             )
 
             # Phase 3: Matrix 2 (retrieval) — highlight changed position

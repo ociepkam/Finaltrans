@@ -17,7 +17,7 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
     0, 45, ..., 315) and FIGURE_LABELS (arms: 0, 2, 3, ..., 12).
 
     Parameters
-    ----------
+    ----
     win : visual.Window
         PsychoPy window object.
     config : dict
@@ -29,7 +29,7 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
         Number of stimuli in the set.
 
     Returns
-    -------
+    ----
     dict
         A dictionary containing:
             - "matrix_1"  : list of stimulus dicts (original set)
@@ -64,24 +64,37 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
     mask_dots = prepare_stimulus(win, config, "mask", [0] * n_elements)
 
     # 5. Pick a random cued index and add underline to mask
-    cued_idx = random.randrange(n_elements)
+    # Rule 1: changed_idx must be cued_idx.
+    # Rule 2: new_val cannot be a neighbor of old_val.
+    valid_indices = []
+    for idx in range(n_elements):
+        old_v = matrix_1_values[idx]
+        old_v_rank = pool.index(old_v)
+        neighbors = []
+        if old_v_rank > 0: neighbors.append(pool[old_v_rank - 1])
+        if old_v_rank < len(pool) - 1: neighbors.append(pool[old_v_rank + 1])
+
+        possible_new = [v for v in pool if v not in matrix_1_values and v not in neighbors]
+        if possible_new:
+            valid_indices.append((idx, possible_new))
+
+    # Pick from valid indices to satisfy Rule 2
+    cued_idx, possible_new_vals = random.choice(valid_indices)
+    new_val = random.choice(possible_new_vals)
+    old_val = matrix_1_values[cued_idx]
+    changed_idx = cued_idx
+
     cued_stim = mask_dots[cued_idx]["stimulus"]
     underline = create_underline(win, config, cued_stim)
 
-    mask = mask_dots + [underline]
+    mask_with_uderline = mask_dots + [underline]
 
     # 6. Determine rank of cued stimulus in matrix_1 (ascending by pool order)
     sorted_values = sorted(matrix_1_values, key=lambda v: pool.index(v))
     cued_value = matrix_1_values[cued_idx]
     cued_rank = sorted_values.index(cued_value)
 
-    # 7. Create matrix_2 values (one element changed, not in matrix_1)
-    changed_idx = random.randrange(n_elements)
-    old_val = matrix_1_values[changed_idx]
-
-    remaining_pool = [v for v in pool if v not in matrix_1_values]
-    new_val = random.choice(remaining_pool)
-
+    # 7. Create matrix_2 values
     matrix_2_values = list(matrix_1_values)
     matrix_2_values[changed_idx] = new_val
 
@@ -95,50 +108,40 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
 
     # 10. Package answer metadata
     answer = {
-        "cued_index":    cued_idx,
-        "cued_value":    cued_value,
-        "cued_rank":     cued_rank,
+        "cued_index": cued_idx,
+        "cued_value": cued_value,
+        "cued_rank": cued_rank,
         "correct_index": correct_index,
         "correct_value": correct_value,
         "changed_index": changed_idx,
-        "old_value":     old_val,
-        "new_value":     new_val,
-        "pos":           matrix_2[correct_index]["pos"],
+        "old_value": old_val,
+        "new_value": new_val,
+        "pos": matrix_2[correct_index]["pos"],
     }
 
     return {
-        "matrix_1": matrix_1,
-        "mask":     mask,
-        "matrix_2": matrix_2,
-        "answer":   answer,
+        "matrix_1": mask_with_uderline,
+        "matrix_2": matrix_1,
+        "matrix_3": mask_dots,
+        "matrix_4": matrix_2,
+        "answer": answer,
     }
 
 
 # For tests
 if __name__ == "__main__":
     from psychopy import visual, core, event
+    from src.load_data import load_config
+    from os.path import join
 
-    config = {
-        "stimulus_center": (0, 0),
-        "stimulus_distance_from_center": 100,
-        "mask_dot_size": 20,
-        "stimulus_color": "black",
-        "arrow_size": 1.0,
-        "stimulus_arrow_width": 2,
-        "figure_size": 30,
-        "stimulus_figure_width": 2,
-        "dot_size": 20,
-        "underline_extra_x_size": 10,
-        "underline_extra_y_distance": -15,
-        "underline_color": "black",
-        "underline_width": 2,
-    }
-
+    config = load_config(join("..", "config.yaml"))
     win = visual.Window(color="white", units="pix", fullscr=True)
+
 
     def draw_stimuli(stim_list):
         for s in stim_list:
             s["stimulus"].draw()
+
 
     def draw_phase(stim_list, label_text, duration):
         label = visual.TextStim(win, text=label_text, pos=(0, -350),
@@ -148,6 +151,7 @@ if __name__ == "__main__":
         win.flip()
         core.wait(duration)
 
+
     for stimulus_type in ["arrow", "figure"]:
         for n in [2, 4, 6]:
 
@@ -156,26 +160,24 @@ if __name__ == "__main__":
 
             # Phase 1: Mask with underline (cued position)
             draw_phase(
-                trial["mask"],
+                trial["matrix_1"],
                 f"{stimulus_type.upper()}  n={n}  |  CUE  "
                 f"(cued_idx={ans['cued_index']}  rank={ans['cued_rank']})",
                 duration=2.0
             )
 
-            # Blank
-            win.flip()
-            core.wait(0.5)
-
             # Phase 2: Matrix 1 (encoding)
             draw_phase(
-                trial["matrix_1"],
+                trial["matrix_2"],
                 f"{stimulus_type.upper()}  n={n}  |  ENCODING",
-                duration=2.0
+                duration=3.0
             )
 
-            # Blank
-            win.flip()
-            core.wait(0.5)
+            draw_phase(
+                trial["matrix_3"],
+                f"{stimulus_type.upper()}  n={n}  |  ENCODING",
+                duration=1.0
+            )
 
             # Phase 3: Matrix 2 (retrieval) — highlight correct answer
             highlight = visual.Circle(
@@ -187,7 +189,7 @@ if __name__ == "__main__":
                 lineWidth=2,
                 pos=ans["pos"]
             )
-            draw_stimuli(trial["matrix_2"])
+            draw_stimuli(trial["matrix_4"])
             highlight.draw()
             info = visual.TextStim(
                 win,

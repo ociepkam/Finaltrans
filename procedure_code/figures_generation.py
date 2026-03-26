@@ -251,19 +251,27 @@ def create_underline(win, config, stimulus, fig_size=None):
                 "Pass fig_size explicitly to create_underline()."
             )
 
-    underline_pos = (
-        pos[0] - fig_size/2 - config["underline_extra_x_size"]/2,
-        pos[1] - fig_size/2 + config["underline_extra_y_distance"]
+    # underline_pos = (
+    #     pos[0] - fig_size/2 - config["underline_extra_x_size"]/2,
+    #     pos[1] - fig_size/2 + config["underline_extra_y_distance"]
+    # )
+
+    fig_stim = visual.Rect(
+        win,
+        size=(fig_size+config["underline_extra_size"]),
+        lineColor = config["underline_color"],
+        lineWidth = config["underline_width"],
+        pos = pos
     )
 
-    fig_stim = visual.ShapeStim(
-        win,
-        vertices=[(0, 0), (fig_size + config["underline_extra_x_size"], 0)],
-        closeShape=False,
-        lineColor=config["underline_color"],
-        lineWidth=config["underline_width"],
-        pos=underline_pos
-    )
+    # fig_stim = visual.ShapeStim(
+    #     win,
+    #     vertices=[(0, 0), (fig_size + config["underline_extra_x_size"], 0)],
+    #     closeShape=False,
+    #     lineColor=config["underline_color"],
+    #     lineWidth=config["underline_width"],
+    #     pos=underline_pos
+    # )
 
     stimulus = {
         "stim_type": "underline",
@@ -277,9 +285,11 @@ def create_underline(win, config, stimulus, fig_size=None):
 # Plot all figures for testing
 if __name__ == "__main__":
     from src.load_data import load_config
+    from os.path import join
 
+    config = load_config(join("..", "config.yaml"))
     win = visual.Window(color='white', units='pix', fullscr=True)
-    config = load_config("..\config.yaml")
+
     for i, e in enumerate(ARROW_LABELS.keys()):
         a = create_arrow(win, config, (-300 + i*40, 0), e)
         a["stimulus"].draw()
