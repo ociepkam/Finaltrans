@@ -3,6 +3,9 @@ import atexit
 import csv
 from os.path import join
 
+# Module-level reference to the save function, set by register_save_beh_results
+_save_beh_results = None
+
 
 def abort_with_error(err):
     """
@@ -25,6 +28,8 @@ def check_exit(key='f7'):
     stop = event.getKeys(keyList=[key])
     if len(stop) > 0:
         logging.critical('Experiment finished by user! {} pressed.'.format(key))
+        if _save_beh_results is not None:
+            _save_beh_results()
         exit(1)
 
 
@@ -38,7 +43,6 @@ def register_save_beh_results(results, part_id, timestamp):
         part_id (str): The participant's unique identifier used for naming the output files.
         timestamp (str): The timestamp when the experiment was started.
     """
-
     @atexit.register
     def save_beh_results():
         if not results:
@@ -56,3 +60,7 @@ def register_save_beh_results(results, part_id, timestamp):
             logging.info(f'Behavioral results saved successfully. Total rows: {len(results)}.')
         except Exception as e:
             logging.critical(f'Failed to save behavioral results: {e}')
+
+        global _save_beh_results
+        _save_beh_results = save_beh_results
+        atexit.register(save_beh_results)

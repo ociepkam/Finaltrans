@@ -1,5 +1,5 @@
 import random
-from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS, create_underline
+from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS, create_underline, create_hit_area
 from procedure_code.stimulus_position import prepare_stimulus
 
 
@@ -106,7 +106,10 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
     # 9. Prepare matrix_2
     matrix_2 = prepare_stimulus(win, config, stimulus_type, matrix_2_values)
 
-    # 10. Package answer metadata
+    # 10. Build hit-areas aligned with matrix_4 (= matrix_2) positions
+    hit_areas = [create_hit_area(win, config, s["pos"]) for s in matrix_2]
+
+    # 11. Package answer metadata
     answer = {
         "cued_index": cued_idx,
         "cued_value": cued_value,
@@ -124,6 +127,7 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
         "matrix_2": matrix_1,
         "matrix_3": mask_dots,
         "matrix_4": matrix_2,
+        "hit_areas": hit_areas,
         "answer": answer,
     }
 

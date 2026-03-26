@@ -282,6 +282,67 @@ def create_underline(win, config, stimulus, fig_size=None):
 
     return stimulus
 
+
+def create_hit_area(win, config, pos):
+    """
+    Create an invisible rectangular hit-area used for mouse click detection.
+
+    Because PsychoPy's ShapeStim.contains() operates on the convex hull of
+    vertices, thin line stimuli (arrows, star figures) have a near-zero
+    clickable area. This function creates a square Rect centred on the
+    stimulus position that acts as a reliable click target.
+
+    The hit-area is normally invisible (opacity 0). When the mouse hovers
+    over it, it becomes visible with a configurable highlight style, provided
+    that ``hit_area_show_hover`` is True in config.
+
+    To use hover highlighting, call ``update_hit_area_hover(hit_area_dict,
+    mouse)`` once per frame inside the response loop.
+
+    Parameters
+    ----
+    win : visual.Window
+        PsychoPy window object.
+    config : dict
+        Experiment configuration dictionary. Must contain:
+            - "hit_area_size"        (float): Side length of the square in pixels.
+            - "hit_area_show_hover"  (bool):  If True, the rect becomes visible
+              on hover.
+            - "hit_area_hover_color" (str):   Line color when hovered
+              (e.g. "white").
+            - "hit_area_hover_width" (int):   Line width in pixels when hovered.
+            - "hit_area_hover_fill"  (str or None): Fill color when hovered.
+              Use None for transparent fill.
+    pos : tuple of float
+        (x, y) centre position in pixels.
+
+    Returns
+    ----
+    dict
+        A stimulus descriptor with the following keys:
+            - "stim_type"  (str):            Always "hit_area".
+            - "stim_label" (None):           Always None.
+            - "pos"        (tuple of float): Position passed to the function.
+            - "stimulus"   (visual.Rect):    The PsychoPy Rect object.
+    """
+    rect = visual.Rect(
+        win,
+        width=config["hit_area_size"],
+        height=config["hit_area_size"],
+        pos=pos,
+        lineColor=None,
+        fillColor=None,
+        opacity=0,
+        lineWidth=config["hit_area_hover_width"],
+    )
+    return {
+        "stim_type": "hit_area",
+        "stim_label": None,
+        "pos": pos,
+        "stimulus": rect,
+    }
+
+
 # Plot all figures for testing
 if __name__ == "__main__":
     from src.load_data import load_config

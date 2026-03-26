@@ -25,6 +25,18 @@ def draw_stim(stim, flag):
         stim.setAutoDraw(flag)
 
 
+def drwa_stim_for_duration(win, stim, time, clock, end_flip=True):
+    draw_stim(stim, True)
+    win.callOnFlip(clock.reset)
+    win.flip()
+    while clock.getTime() < time:
+        check_exit()
+        win.flip()
+    draw_stim(stim, False)
+    if end_flip:
+        win.flip()
+
+
 def present_text(win, file_name, config, keys=('return', 'space', 'f7'), replacements={}):
     """
     Displays a text instruction screen loaded from a file and waits for the participant to continue.
@@ -142,7 +154,7 @@ def present_sequence(win, base_name, config,
     logging.info(f'Sequence complete: {idx - 1} screen(s) presented for "{base_name}".')
 
 
-def show_feedback(win, acc, config):
+def show_feedback(win, acc, config, clock):
     """
     Displays a feedback message based on participant's accuracy.
     The message is looked up from a dictionary in config using acc as the key.
@@ -157,6 +169,7 @@ def show_feedback(win, acc, config):
             - 'feedback_color' (str): Color of the feedback text.
             - 'feedback_size' (int | float): Height of the feedback text in window units.
             - 'feedback_time' (float): Duration in seconds to display the feedback.
+        clock: psychopy.core.Clock object.
     """
     feedback_text = config['feedback_text'][acc]
     logging.info(f'Displaying feedback for acc={acc}: "{feedback_text}"')
@@ -164,7 +177,5 @@ def show_feedback(win, acc, config):
     feedback = visual.TextStim(win, text=feedback_text,
                                color=config['feedback_color'],
                                height=config['feedback_size'])
-    feedback.draw()
-    win.flip()
-    core.wait(config['feedback_time'])
-    win.flip()
+
+    drwa_stim_for_duration(win=win, stim=feedback, time=config['feedback_time'], clock=clock)

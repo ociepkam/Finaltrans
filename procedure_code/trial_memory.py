@@ -1,5 +1,5 @@
 import random
-from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS
+from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS, create_hit_area
 from procedure_code.stimulus_position import prepare_stimulus
 
 
@@ -14,7 +14,7 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
     4. answer: Metadata about what changed and where.
 
     Parameters
-    ----------
+    ----
     win : visual.Window
         PsychoPy window object.
     config : dict
@@ -25,13 +25,15 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
         Number of stimuli in the set.
 
     Returns
-    -------
+    ----
     dict
         A dictionary containing:
-            - "matrix_1": list of stimulus dicts (original)
-            - "mask":     list of stimulus dicts (dots)
-            - "matrix_2": list of stimulus dicts (one changed)
-            - "answer":   dict with keys:
+            - "matrix_1":  list of stimulus dicts (original)
+            - "matrix_2":  list of stimulus dicts (mask dots)
+            - "matrix_3":  list of stimulus dicts (mask dots, same as matrix_2)
+            - "matrix_4":  list of stimulus dicts (one changed, retrieval)
+            - "hit_areas": list of hit-area dicts aligned with matrix_4
+            - "answer":    dict with keys:
                 - "changed_index": int (0 to n-1)
                 - "old_value":     int (original rotation/arms)
                 - "new_value":     int (new rotation/arms)
@@ -67,7 +69,10 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
     # 5. Prepare matrix_2
     matrix_2 = prepare_stimulus(win, config, stimulus_type, matrix_2_values)
 
-    # 6. Package the answer metadata
+    # 6. Build hit-areas aligned with matrix_4 positions
+    hit_areas = [create_hit_area(win, config, s["pos"]) for s in matrix_2]
+
+    # 7. Package the answer metadata
     answer = {
         "changed_index": changed_idx,
         "old_value": old_val,
@@ -80,6 +85,7 @@ def generate_memory_trial(win, config, stimulus_type, n_elements):
         "matrix_2": mask,
         "matrix_3": mask,
         "matrix_4": matrix_2,
+        "hit_areas": hit_areas,
         "answer": answer
     }
 
