@@ -43,6 +43,8 @@ def register_save_beh_results(results, part_id, timestamp):
         part_id (str): The participant's unique identifier used for naming the output files.
         timestamp (str): The timestamp when the experiment was started.
     """
+    global _save_beh_results
+
     @atexit.register
     def save_beh_results():
         if not results:
@@ -61,6 +63,5 @@ def register_save_beh_results(results, part_id, timestamp):
         except Exception as e:
             logging.critical(f'Failed to save behavioral results: {e}')
 
-        global _save_beh_results
         _save_beh_results = save_beh_results
         atexit.register(save_beh_results)

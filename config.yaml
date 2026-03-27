@@ -1,8 +1,7 @@
 # --- Trials ---
 training_trials: [
-                  [{n_trials: 0, task_type: memory, stimulus_type: arrow, n_elements: 2},
-                   {n_trials: 0, task_type: relational, stimulus_type: figure, n_elements: 3}],
-                  [{n_trials: 10, task_type: memory, stimulus_type: figure, n_elements: 4}]
+                  [{n_trials: 5, task_type: memory, stimulus_type: arrow, n_elements: 2},
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3}]
 ]
 
 experiment_trials: [

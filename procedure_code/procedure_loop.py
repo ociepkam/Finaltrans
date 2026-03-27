@@ -139,7 +139,7 @@ def build_result_row(trial, trail_idx, acc, rt, clicked_index, section_type):
         #     if "stim_label" in s:
         #         result.append({"label": s["stim_label"], "pos": s.get("pos")})
         # return result
-        result = [{"label": s["stim_label"], "pos": s.get("pos")} for s in matrix]
+        return [{"label": s["stim_label"], "pos": s.get("pos")} for s in matrix]
 
     return {
         "N":                            trail_idx,

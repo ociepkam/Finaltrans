@@ -12,24 +12,24 @@ from procedure_code.procedure_loop import procedure_loop
 
 def main():
     session_time = time.strftime("%Y_%m_%d_%H_%M", time.gmtime())
-    results_beh = ["N", # trial_idx
-                   "section_type", # training or experiment
-                   "block_number",
-                   "trial_type", # memory or relation
-                   "stimulus_type", # arrow or figure
-                   "n_elements", # number of elements in stimulus
-                   "acc", # participant accuracy
-                   "rt", # participant reaction time
-                   "true_answer_order", # only for relation trials; index from trial["answer"]["correct_index"]
-                   "participant_answer_order", # only for relation trials; order index of participant_answer
-                   "true_answer_in_clue_pos", # only for relation trials; True/False if true answer is in clue position
-                   "participant_answer_in_clue_pos"  # only for relation trials; True/False if participant answer is in clue position
-                   "matrix_1_description", # full information about trial from trial["matrix_1"],
-                   "matrix_2_description",  # full information about trial from trial["matrix_2"],
-                   "matrix_3_description",  # full information about trial from trial["matrix_3"],
-                   "matrix_4_description",  # full information about trial from trial["matrix_4"],
-                   "answer_description",  # full information about trial from trial["answer"],
-                   ]
+    results_beh = []
+    #                "N", # trial_idx
+    #                "section_type", # training or experiment
+    #                "block_number",
+    #                "trial_type", # memory or relation
+    #                "stimulus_type", # arrow or figure
+    #                "n_elements", # number of elements in stimulus
+    #                "acc", # participant accuracy
+    #                "rt", # participant reaction time
+    #                "true_answer_order", # only for relation trials; index from trial["answer"]["correct_index"]
+    #                "participant_answer_order", # only for relation trials; order index of participant_answer
+    #                "true_answer_in_clue_pos", # only for relation trials; True/False if true answer is in clue position
+    #                "participant_answer_in_clue_pos"  # only for relation trials; True/False if participant answer is in clue position
+    #                "matrix_1_description", # full information about trial from trial["matrix_1"],
+    #                "matrix_2_description",  # full information about trial from trial["matrix_2"],
+    #                "matrix_3_description",  # full information about trial from trial["matrix_3"],
+    #                "matrix_4_description",  # full information about trial from trial["matrix_4"],
+    #                "answer_description"  # full information about trial from trial["answer"],
 
     info, part_id = part_info()
 
