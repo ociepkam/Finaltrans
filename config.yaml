@@ -1,9 +1,20 @@
 # --- Trials ---
+# Defines the block structure for each section of the experiment.
+# Each section is a list of blocks; each block is a list of trial groups.
+# A trial group specifies how many trials to generate and their properties:
+#   - n_trials      (int): Number of trials in this group.
+#   - task_type     (str): Task paradigm — "memory" or "relational".
+#   - stimulus_type (str): Type of stimulus — "arrow" or "figure".
+#   - n_elements    (int): Number of elements displayed per stimulus matrix.
+# Trials from all groups within a block are shuffled together before presentation.
+# Multiple blocks within a section are separated by a break screen.
 training_trials: [
                   [{n_trials: 5, task_type: memory, stimulus_type: arrow, n_elements: 2},
                    {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3}]
 ]
 
+# Same structure as training_trials, but used for the main experimental section.
+# Supports multiple blocks — each top-level list entry is a separate block.
 experiment_trials: [
                   [{n_trials: 5, task_type: memory, stimulus_type: arrow, n_elements: 2},
                    {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3}],
@@ -11,80 +22,89 @@ experiment_trials: [
 ]
 
 # --- Timing ---
-matrix_1_time: 2 # in seconds
-matrix_2_time: 6 # in seconds
-matrix_3_time: 1 # in seconds
-matrix_4_time: 4 # in seconds; or until participant will chose answer
+# Duration (in seconds) of each stimulus phase within a trial.
+# The trial sequence is: fixation → matrix_1 → matrix_2 → matrix_3 → matrix_4 (response).
+matrix_1_time: 2 # Phase 1: initial stimulus presentation (encoding cue)
+matrix_2_time: 6 # Phase 2: mask display (memory trials) / main stimulus display (relational trials)
+matrix_3_time: 1 # Phase 3: inter-stimulus interval
+matrix_4_time: 4 # Phase 4: response screen — ends early if participant clicks; max duration in seconds
 
 
-# --- Stimulus visual---
-stimulus_color: black
+# --- Stimulus visual ---
+# All size values are in pixels (units='pix' as set in main.py).
+# Color values accept any PsychoPy-compatible color name or hex string (e.g. "black", "#FF0000").
+stimulus_color: black  # Color of all stimulus elements (figures and arrows)
 
 ## figures
-dot_size: 3
-figure_size: 15
-stimulus_figure_width: 2
+dot_size: 3               # Radius of the dot drawn at each figure vertex (px)
+figure_size: 15           # Size (scale) of a single figure element (px)
+stimulus_figure_width: 2  # Line width of figure outlines (px)
 
 ## arrows
-arrow_size: 3
-stimulus_arrow_width: 2
+arrow_size: 3             # Size (scale) of a single arrow element (px)
+stimulus_arrow_width: 2   # Line width of arrow outlines (px)
 
 ## mask
-mask_dot_size: 15
+mask_dot_size: 15         # Size of each dot in the mask stimulus shown between encoding phases (px)
 
 ## underline
-underline_color: red
-underline_width: 1
-underline_extra_size: 7
+# A line drawn beneath the cued element in relational trials to indicate which item is the clue.
+underline_color: red        # Color of the underline
+underline_width: 1          # Line width of the underline (px)
+underline_extra_size: 7     # How much the underline extends beyond the stimulus edges on each side (px)
 
 # --- Figures Sets Visual ---
-stimulus_center: [0, 0]
-stimulus_distance_from_center: 100
+stimulus_center: [0, 0]               # Screen coordinates [x, y] of the stimulus array center (px); [0,0] = screen center
+stimulus_distance_from_center: 100    # Distance from the center to each stimulus element in the array (px)
 
 ## hit-area (mouse click detection for matrix_4)
+# An invisible rectangle placed over each stimulus during the response phase.
+# Used to detect mouse clicks more reliably than relying on stimulus shape boundaries.
 hit_area_size: 60            # Side length of the invisible click rectangle (px)
-hit_area_show_hover: true    # If true, hit-area becomes visible on mouse hover
-hit_area_hover_color: black  # Border color when hovered
+hit_area_show_hover: true    # If true, hit-area becomes visible on mouse hover (useful for debugging)
+hit_area_hover_color: black  # Border color of the hit-area rectangle when hovered
 hit_area_hover_fill: null    # Fill color when hovered (null = transparent)
-hit_area_hover_width: 2      # Border width when hovered (px)
+hit_area_hover_width: 2      # Border width of the hit-area rectangle when hovered (px)
 
 # --- Monitor Settings ---
-monitor_name: "defaultMonitor"     # Name of the monitor profile in PsychoPy
-monitor_width: 53.0                # Physical width of the screen in cm
-monitor_distance: 60.0             # Distance from the participant to the screen in cm
+monitor_name: "defaultMonitor"     # Name of the monitor profile saved in PsychoPy's Monitor Center
+monitor_width: 53.0                # Physical width of the screen in cm (used to calculate visual angles)
+monitor_distance: 60.0             # Eye-to-screen distance in cm (used to calculate visual angles)
 
 # --- Window Settings ---
-screen_color: "gray"              # Background color of the experiment window
+screen_color: "gray"               # Background color of the experiment window
 
 # --- Fixation Cross ---
 fixation_color: "white"            # Color of the fixation stimulus
-fixation_text: "+"                 # Character used for fixation
-fixation_size: 40                  # Height in pixels (since units='pix' in main.py)
-fixation_time: 1                   # In seconds
+fixation_text: "+"                 # Character used as the fixation point
+fixation_size: 40                  # Height of the fixation character in pixels
+fixation_time: 1                   # Duration of fixation display before each trial (seconds)
 
 # --- Feedback Settings ---
-feedback_training: True            # if feedback should be shown during training
-feedback_experiment: False         # if feedback should be shown during experiment
+feedback_training: True            # Whether to show feedback after each trial during training
+feedback_experiment: False         # Whether to show feedback after each trial during the experiment
 feedback_text: {
-  1: "Dobrze",               # Message for accurate response
-  0: "Błędnie",              # Message for inaccurate response
-  -1: "Brak odpowiedzi"}     # Message for no response
-feedback_color: "white"      # Color of the feedback text
-feedback_size: 24            # Height of the feedback text in pixels
-feedback_time: 1             # Duration of feedback display in seconds
+  1: "Dobrze",               # Message displayed for a correct response
+  0: "Błędnie",              # Message displayed for an incorrect response
+  -1: "Brak odpowiedzi"}     # Message displayed when no response was given
+feedback_color: "white"            # Color of the feedback text
+feedback_size: 24                  # Height of the feedback text in pixels
+feedback_time: 1                   # Duration of feedback display in seconds
 
 # --- Instruction Settings ---
-instruction_color: "white"         # Default color for instruction text
-instruction_text_size: 24          # Default height for instruction text
-instruction_wrap_width: 800        # Maximum line width before wrapping in pixels
-instruction_font: 'Segoe UI Emoji' # Font name of the displayed text
+instruction_color: "white"         # Color of instruction text displayed between sections
+instruction_text_size: 24          # Height of instruction text in pixels
+instruction_wrap_width: 800        # Maximum line width before text wraps, in pixels
+instruction_font: 'Segoe UI Emoji' # Font used for all instruction and feedback text (must be installed on the system)
 
 # --- Trigger Settings ---
+# NOTE: EEG trigger sending is not yet implemented. These settings are reserved for future use.
+# When dummy_mode is true, no signals are sent and the trigger system is fully bypassed.
 trigger:
-  dummy_mode: true        # false = wysyłaj sygnały do EEG
-  trigger_time: 0.004     # trigger time in s
-  trigger_limit: 60       # maks trigger value (triggers will be sent in a loop from 1 to trigger_limit)
-  trigger_params:         # extra columns in trigger_map
+  dummy_mode: true        # If false, triggers would be sent to the EEG system (not implemented)
+  trigger_time: 0.004     # Duration of a single trigger pulse in seconds
+  trigger_limit: 60       # Maximum trigger value; triggers cycle from 1 to this limit
+  trigger_params:         # Additional trial parameters to include in the trigger map (for future use)
     - block_type
     - acc
     - trial_type
