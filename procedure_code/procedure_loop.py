@@ -250,6 +250,7 @@ def procedure_loop(win, config, section_type, trials, results, mouse, clock, fix
             stimulus_list = get_stimulus_list(trial["matrix_4"])
             hit_areas = trial["hit_areas"]
             hit_area_stims = [h["stimulus"] for h in hit_areas]
+            draw_stim(hit_area_stims, True)
             draw_stim(stimulus_list, True)
             win.callOnFlip(clock.reset)
             win.callOnFlip(mouse.clickReset)

@@ -43,11 +43,11 @@ stimulus_center: [0, 0]
 stimulus_distance_from_center: 100
 
 ## hit-area (mouse click detection for matrix_4)
-hit_area_size: 100            # Side length of the invisible click rectangle (px)
+hit_area_size: 60            # Side length of the invisible click rectangle (px)
 hit_area_show_hover: true    # If true, hit-area becomes visible on mouse hover
 hit_area_hover_color: black  # Border color when hovered
 hit_area_hover_fill: null    # Fill color when hovered (null = transparent)
-hit_area_hover_width: 10      # Border width when hovered (px)
+hit_area_hover_width: 2      # Border width when hovered (px)
 
 # --- Monitor Settings ---
 monitor_name: "defaultMonitor"     # Name of the monitor profile in PsychoPy
