@@ -9,16 +9,35 @@
 # Trials from all groups within a block are shuffled together before presentation.
 # Multiple blocks within a section are separated by a break screen.
 training_trials: [
-                  [{n_trials: 5, task_type: memory, stimulus_type: arrow, n_elements: 2},
-                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3}]
+                  [{n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 3},
+                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 4},
+                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 5},
+                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 6},
+                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 3},
+                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 4},
+                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 5},
+                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 6}]
 ]
 
 # Same structure as training_trials, but used for the main experimental section.
 # Supports multiple blocks — each top-level list entry is a separate block.
 experiment_trials: [
-                  [{n_trials: 5, task_type: memory, stimulus_type: arrow, n_elements: 2},
-                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3}],
-                  [{n_trials: 10, task_type: memory, stimulus_type: figure, n_elements: 4}]
+                  [{n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 3},
+                   {n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 4},
+                   {n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 5},
+                   {n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 6},
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3},
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 4},
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 5},
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6}],
+                  [ { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 3 },
+                    { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 4 },
+                    { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 5 },
+                    { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 6 },
+                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3 },
+                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 4 },
+                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 5 },
+                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6 } ]
 ]
 
 # --- Timing ---
@@ -27,7 +46,7 @@ experiment_trials: [
 matrix_1_time: 2 # Phase 1: initial stimulus presentation (encoding cue)
 matrix_2_time: 6 # Phase 2: mask display (memory trials) / main stimulus display (relational trials)
 matrix_3_time: 1 # Phase 3: inter-stimulus interval
-matrix_4_time: 4 # Phase 4: response screen — ends early if participant clicks; max duration in seconds
+matrix_4_time: 10 # Phase 4: response screen — ends early if participant clicks; max duration in seconds
 
 
 # --- Stimulus visual ---
@@ -45,22 +64,22 @@ arrow_size: 3             # Size (scale) of a single arrow element (px)
 stimulus_arrow_width: 2   # Line width of arrow outlines (px)
 
 ## mask
-mask_dot_size: 15         # Size of each dot in the mask stimulus shown between encoding phases (px)
+mask_dot_size: 30         # Size of each dot in the mask stimulus shown between encoding phases (px)
 
-## underline
-# A line drawn beneath the cued element in relational trials to indicate which item is the clue.
-underline_color: red        # Color of the underline
-underline_width: 1          # Line width of the underline (px)
-underline_extra_size: 7     # How much the underline extends beyond the stimulus edges on each side (px)
+### underline
+## A line drawn beneath the cued element in relational trials to indicate which item is the clue.
+#underline_color: red        # Color of the underline
+#underline_width: 1          # Line width of the underline (px)
+#underline_extra_size: 7     # How much the underline extends beyond the stimulus edges on each side (px)
 
 # --- Figures Sets Visual ---
 stimulus_center: [0, 0]               # Screen coordinates [x, y] of the stimulus array center (px); [0,0] = screen center
-stimulus_distance_from_center: 100    # Distance from the center to each stimulus element in the array (px)
+stimulus_distance_from_center: 40    # Distance from the center to each stimulus element in the array (px)
 
 ## hit-area (mouse click detection for matrix_4)
 # An invisible rectangle placed over each stimulus during the response phase.
 # Used to detect mouse clicks more reliably than relying on stimulus shape boundaries.
-hit_area_size: 60            # Side length of the invisible click rectangle (px)
+hit_area_size: 40            # Side length of the invisible click rectangle (px)
 hit_area_show_hover: true    # If true, hit-area becomes visible on mouse hover (useful for debugging)
 hit_area_hover_color: black  # Border color of the hit-area rectangle when hovered
 hit_area_hover_fill: null    # Fill color when hovered (null = transparent)
@@ -72,10 +91,10 @@ monitor_width: 53.0                # Physical width of the screen in cm (used to
 monitor_distance: 60.0             # Eye-to-screen distance in cm (used to calculate visual angles)
 
 # --- Window Settings ---
-screen_color: "gray"               # Background color of the experiment window
+screen_color: '#f2f2f2'              # Background color of the experiment window
 
 # --- Fixation Cross ---
-fixation_color: "white"            # Color of the fixation stimulus
+fixation_color: black              # Color of the fixation stimulus
 fixation_text: "+"                 # Character used as the fixation point
 fixation_size: 40                  # Height of the fixation character in pixels
 fixation_time: 1                   # Duration of fixation display before each trial (seconds)
@@ -87,12 +106,12 @@ feedback_text: {
   1: "Dobrze",               # Message displayed for a correct response
   0: "Błędnie",              # Message displayed for an incorrect response
   -1: "Brak odpowiedzi"}     # Message displayed when no response was given
-feedback_color: "white"            # Color of the feedback text
+feedback_color: black            # Color of the feedback text
 feedback_size: 24                  # Height of the feedback text in pixels
 feedback_time: 1                   # Duration of feedback display in seconds
 
 # --- Instruction Settings ---
-instruction_color: "white"         # Color of instruction text displayed between sections
+instruction_color: black         # Color of instruction text displayed between sections
 instruction_text_size: 24          # Height of instruction text in pixels
 instruction_wrap_width: 800        # Maximum line width before text wraps, in pixels
 instruction_font: 'Segoe UI Emoji' # Font used for all instruction and feedback text (must be installed on the system)
