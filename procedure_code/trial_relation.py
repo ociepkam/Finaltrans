@@ -1,5 +1,5 @@
 import random
-from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS, create_underline, create_hit_area
+from procedure_code.figures_generation import ARROW_LABELS, FIGURE_LABELS, LETTER_LABELS, create_underline, create_hit_area
 from procedure_code.stimulus_position import prepare_stimulus
 
 
@@ -51,6 +51,8 @@ def generate_relational_trial(win, config, stimulus_type, n_elements):
         pool = list(ARROW_LABELS.keys())
     elif stimulus_type == "figure":
         pool = list(FIGURE_LABELS.keys())
+    elif stimulus_type == "letter":
+        pool = list(LETTER_LABELS.keys())
     else:
         raise ValueError(f"Invalid stimulus_type: '{stimulus_type}'")
 

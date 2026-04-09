@@ -10,13 +10,11 @@
 # Multiple blocks within a section are separated by a break screen.
 training_trials: [
                   [{n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 3},
-                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 4},
-                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 5},
-                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 6},
-                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 3},
                    {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 4},
+                   {n_trials: 1, task_type: relational, stimulus_type: letter, n_elements: 5},
+                   {n_trials: 1, task_type: relational, stimulus_type: letter, n_elements: 4},
                    {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 5},
-                   {n_trials: 1, task_type: relational, stimulus_type: figure, n_elements: 6}]
+                   {n_trials: 1, task_type: relational, stimulus_type: arrow, n_elements: 6}]
 ]
 
 # Same structure as training_trials, but used for the main experimental section.
@@ -29,7 +27,11 @@ experiment_trials: [
                    {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3},
                    {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 4},
                    {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 5},
-                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6}],
+                   {n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6},
+                   { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 3 },
+                   { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 4 },
+                   { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 5 },
+                   { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 6 }],
                   [ { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 3 },
                     { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 4 },
                     { n_trials: 5, task_type: relational, stimulus_type: arrow, n_elements: 5 },
@@ -37,7 +39,11 @@ experiment_trials: [
                     { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 3 },
                     { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 4 },
                     { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 5 },
-                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6 } ]
+                    { n_trials: 5, task_type: relational, stimulus_type: figure, n_elements: 6 },
+                    { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 3 },
+                    { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 4 },
+                    { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 5 },
+                    { n_trials: 5, task_type: relational, stimulus_type: letter, n_elements: 6 }]
 ]
 
 # --- Timing ---
@@ -63,14 +69,18 @@ stimulus_figure_width: 2  # Line width of figure outlines (px)
 arrow_size: 3             # Size (scale) of a single arrow element (px)
 stimulus_arrow_width: 2   # Line width of arrow outlines (px)
 
+## letters
+letter_height: 30
+letter_color: black
+
 ## mask
 mask_dot_size: 30         # Size of each dot in the mask stimulus shown between encoding phases (px)
 
 ### underline
 ## A line drawn beneath the cued element in relational trials to indicate which item is the clue.
-#underline_color: red        # Color of the underline
-#underline_width: 1          # Line width of the underline (px)
-#underline_extra_size: 7     # How much the underline extends beyond the stimulus edges on each side (px)
+underline_color: red        # Color of the underline
+underline_width: 1          # Line width of the underline (px)
+underline_extra_size: 7     # How much the underline extends beyond the stimulus edges on each side (px)
 
 # --- Figures Sets Visual ---
 stimulus_center: [0, 0]               # Screen coordinates [x, y] of the stimulus array center (px); [0,0] = screen center
@@ -113,7 +123,7 @@ feedback_time: 1                   # Duration of feedback display in seconds
 # --- Instruction Settings ---
 instruction_color: black         # Color of instruction text displayed between sections
 instruction_text_size: 24          # Height of instruction text in pixels
-instruction_wrap_width: 800        # Maximum line width before text wraps, in pixels
+instruction_wrap_width: 2000        # Maximum line width before text wraps, in pixels
 instruction_font: 'Segoe UI Emoji' # Font used for all instruction and feedback text (must be installed on the system)
 
 # --- Trigger Settings ---

@@ -25,6 +25,18 @@ FIGURE_LABELS = {
 }
 
 
+LETTER_LABELS = {
+    'B': 'B',
+    'D': 'D',
+    'H': 'H',
+    'K': 'K',
+    'N': 'N',
+    'P': 'P',
+    'T': 'T',
+    'Z': 'Z'
+}
+
+
 def create_arrow(win, config, pos, rotation):
     """
         Create an arrow stimulus using PsychoPy's ShapeStim.
@@ -204,6 +216,55 @@ def create_mask_dot(win, config, pos):
     return stimulus
 
 
+def create_letter(win, config, pos, letter):
+    """
+    Create a letter stimulus using PsychoPy's TextStim.
+
+    Parameters
+    ----------
+    win : visual.Window
+        PsychoPy window object.
+    config : dict
+        Experiment configuration dictionary. Must contain:
+            - "letter_height" (float): Height of the letter stimulus.
+            - "letter_color" (str or list): Color of the text.
+    pos : tuple of float
+        (x, y) position of the letter center.
+    letter : str
+        The letter to display. Must be one of the keys in LETTER_LABELS.
+
+    Returns
+    -------
+    dict
+        A stimulus descriptor with the following keys:
+            - "stim_type"  (str):                Always "letter".
+            - "stim_label" (str):                The letter character (e.g. "B").
+            - "pos"        (tuple of float):     Position passed to the function.
+            - "stimulus"   (visual.TextStim):    The PsychoPy stimulus object.
+    """
+    if letter not in LETTER_LABELS:
+        raise ValueError(f"Letter {letter} not found in LETTER_LABELS")
+
+    letter_stim = visual.TextStim(
+        win,
+        text=LETTER_LABELS[letter],
+        pos=pos,
+        height=config["letter_height"],
+        color=config["letter_color"],
+        units='pix', # lub inne jednostki zgodne z Twoim win/config
+        alignHoriz='center',
+        alignVert='center'
+    )
+
+    stimulus = {
+        "stim_type": "letter",
+        "stim_label": LETTER_LABELS[letter],
+        "pos": pos,
+        "stimulus": letter_stim
+    }
+    return stimulus
+
+
 def create_underline(win, config, stimulus, fig_size=None):
     """
     Create an underline stimulus positioned relative to a given base stimulus.
@@ -357,6 +418,9 @@ if __name__ == "__main__":
     for i, e in enumerate(FIGURE_LABELS.keys()):
         a = create_figure(win, config, (-300 + i * 40, -100), e)
         a["stimulus"].draw()
+    for i, l in enumerate(LETTER_LABELS.keys()):
+        let = create_letter(win, config, (-300 + i * 40, -200), l)
+        let["stimulus"].draw()
 
     a = create_underline(win, config, a["stimulus"], fig_size=config["figure_size"] * 2)
     a["stimulus"].draw()

@@ -1,6 +1,6 @@
 import numpy as np
 
-from procedure_code.figures_generation import create_arrow, create_figure, create_mask_dot
+from procedure_code.figures_generation import create_arrow, create_figure, create_letter, create_mask_dot
 
 
 def get_stimuli_positions(config, n_elements):
@@ -91,12 +91,14 @@ def prepare_stimulus(win, config, stimulus_type, figures):
         Type of stimulus to create. Must be one of:
             - "arrow"  — keys from ARROW_LABELS (0, 45, 90, ..., 315)
             - "figure" — keys from FIGURE_LABELS (0, 2, 3, 4, 5, 6, 8, 12)
+            - "letter" — keys from LETTER_LABELS (B D H K N P T Z)
             - "mask"   — values are ignored; only len(figures) matters
     figures : list
         List of stimulus identifiers. Length determines the number of stimuli
         and their positions. Interpretation depends on stimulus_type:
             - "arrow":  list of int rotation values (e.g. [0, 90, 180])
             - "figure": list of int arm counts   (e.g. [3, 4, 6])
+            - "letter": list of strings (e.g. ["A", "D", "Z"])
             - "mask":   list of any values       (e.g. [0, 0, 0])
 
     Returns
@@ -108,7 +110,7 @@ def prepare_stimulus(win, config, stimulus_type, figures):
     Raises
     ------
     ValueError
-        If stimulus_type is not one of "arrow", "figure", or "mask".
+        If stimulus_type is not one of "arrow", "figure", "letter", or "mask".
     """
     positions = get_stimuli_positions(config, len(figures))
 
@@ -118,6 +120,8 @@ def prepare_stimulus(win, config, stimulus_type, figures):
             stim = create_arrow(win, config, pos, rotation=fig)
         elif stimulus_type == "figure":
             stim = create_figure(win, config, pos, n_arms=fig)
+        elif stimulus_type == "letter":
+            stim = create_letter(win, config, pos, letter=fig)
         elif stimulus_type == "mask":
             stim = create_mask_dot(win, config, pos)
         else:
