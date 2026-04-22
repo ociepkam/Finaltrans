@@ -55,7 +55,7 @@ def register_save_beh_results(results, part_id, timestamp):
         logging.info(f'Saving behavioral results to {filename}...')
 
         try:
-            with open(join('results', filename), 'w', newline='') as beh_file:
+            with open(join('results', filename), 'w', newline='', encoding='utf-8') as beh_file:
                 dict_writer = csv.DictWriter(beh_file, results[0].keys())
                 dict_writer.writeheader()
                 dict_writer.writerows(results)
